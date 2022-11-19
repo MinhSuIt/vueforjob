@@ -1,7 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import { useAuthStore } from '../stores/auth'
-import HomeView from '../views/HomeView.vue'
-import LoginView from '../views/LoginView.vue'
 
 import { isEmpty } from 'lodash'
 const router = createRouter({
@@ -10,12 +8,12 @@ const router = createRouter({
     {
       path: '/',
       name: 'home',
-      component: HomeView,
+      component: import('../views/HomeView.vue'),
     },
     {
       path: '/login',
       name: '/login',
-      component: LoginView,
+      component: import('../views/LoginView.vue'),
       meta: { requireAuth: false },
     },
     {
@@ -37,11 +35,29 @@ const router = createRouter({
       component: () => import('../views/RequireAuthView.vue'),
       meta: { requireAuth: true },
     },
+    {
+      path: '/product/:id',
+      name: 'product',
+      component: () => import('../views/ProductView.vue'),
+      children: [ //nested route
+        {
+          path: 'infomation',
+          name: 'product-infomation',
+          component: () => import('../views/ProductInfoView.vue'),
+        },
+        {
+          path: 'review',
+          name: 'product-review',
+          component: () => import('../views/ProductReviewView.vue'),
+        },
+      ],
+    },
+    { path: '/:pathMatch(.*)*', name: 'NotFound', component: () => import('../views/NotFoundView.vue') },
   ]
 })
 
 router.beforeEach((to) => {
-  // phải login mới vào đc những trang login
+  // phải login mới vào đc những trang require login
   const auth = useAuthStore()
   if (to.meta.requireAuth && isEmpty(auth?.user)) {
     router.replace({ name: 'home', params: {} })
