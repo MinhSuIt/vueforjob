@@ -1,12 +1,11 @@
 <template>
   <div>
-    <div>{{ isLoading }}</div>
+    <div>is loading: {{ isLoading }}</div>
     <div v-if="isOpen">
-      Alert cục bộ khi login ko thành công với message: {{ message }}
+      alert is open:{{ isOpen }} Alert cục bộ khi login ko thành công với
+      message: {{ message }}
     </div>
-    <div>
-        Layout chứa alert toàn cục + teleport để làm alert toàn cục
-    </div>
+    <div>Layout chứa alert toàn cục + teleport để làm alert toàn cục</div>
     <input type="text" v-model="email" name="email" placeholder="Email" />
     <input
       type="text"

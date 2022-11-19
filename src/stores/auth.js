@@ -2,6 +2,7 @@ import { defineStore } from 'pinia'
 import { login } from './../services/authService'
 import { useLoadingStore } from './loading'
 export const useAuthStore = defineStore('auth', {
+    persist: true,
     state: () => {
         return {
             access_token: '',
@@ -17,8 +18,8 @@ export const useAuthStore = defineStore('auth', {
     },
     actions: {
         async loginAction({ email, password }) {
+            const loading = useLoadingStore()
             try {
-                const loading = useLoadingStore()
                 loading.handleLoading(true);
                 const loginInfo = await login({ email, password })
                 this.access_token = loginInfo.access_token

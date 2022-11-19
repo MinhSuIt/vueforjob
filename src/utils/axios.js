@@ -34,5 +34,5 @@ axiosInstance.interceptors.response.use(
     }
 )
 
-
+// tích hợp axios-mock-adapter để ko cần phụ thuộc api, chỉ cần biết cấu trúc dữ liệu trả về
 export default axiosInstance
