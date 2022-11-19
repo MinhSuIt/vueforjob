@@ -17,16 +17,38 @@
       value=""
       placeholder="sử dụng ref để auto focus and pass value trong mounted"
     />
-    <item-for-emit-view  @customEvent="customedEvent" />
+    <item-for-emit-view @customEvent="customedEvent" />
+    <global-component-without-import />
+    <!-- pass prop -->
+    <fallthrough-attr title="pass prop" class="border" />
+    <async-component v-if="flag" />
+    <button @click="flag = true">show async component</button>
+    <ref-vs-data />
+    <transition-component />
   </div>
 </template>
 
 <script>
-import ItemForEmitView from './ItemForEmitView.vue';
+import TransitionComponent from '../components/TransitionComponent.vue'
+import RefVsData from "../components/RefVsData.vue";
+import FallthroughAttr from "../components/FallthroughAttr.vue";
+import GlobalComponentWithoutImport from "../components/GlobalComponentWithoutImport.vue";
+import ItemForEmitView from "./ItemForEmitView.vue";
+import { defineAsyncComponent } from "vue";
+// import AsyncComponent from '../components/AsyncComponent.vue'
+const AsyncComponent = defineAsyncComponent(() => {
+  return new Promise((resolve, reject) => {
+    resolve(import("../components/AsyncComponent.vue"));
+  });
+});
 export default {
   // import component con vào
-  components:{
+  components: {
     ItemForEmitView,
+    GlobalComponentWithoutImport,
+    FallthroughAttr,
+    AsyncComponent,
+    RefVsData, TransitionComponent
   },
   data() {
     return {
@@ -34,6 +56,7 @@ export default {
       twoway: {
         name: "",
       },
+      flag: false,
     };
   },
   methods: {
@@ -51,8 +74,9 @@ export default {
       this.data = "abc";
     },
     customedEvent(param) {
-      alert(param)
+      alert(param);
     },
+
   },
   computed: {
     computedData: {

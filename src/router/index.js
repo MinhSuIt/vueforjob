@@ -21,7 +21,7 @@ const router = createRouter({
       path: '/learn-old-version',
       name: '/learn-old-version',
       component: () => import('../views/LearnOldVersionView.vue')
-    }
+    },
   ]
 })
 
