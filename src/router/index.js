@@ -8,12 +8,12 @@ const router = createRouter({
     {
       path: '/',
       name: 'home',
-      component: import('../views/HomeView.vue'),
+      component: () => import('../views/HomeView.vue'),
     },
     {
       path: '/login',
       name: '/login',
-      component: import('../views/LoginView.vue'),
+      component: () => import('../views/LoginView.vue'),
       meta: { requireAuth: false },
     },
     {
@@ -52,7 +52,13 @@ const router = createRouter({
         },
       ],
     },
+    {
+      path: '/create-with-upload-form-data',
+      name: 'create-with-upload-form-data',
+      component: () => import('../views/CreateWithUploadView.vue'),
+    },
     { path: '/:pathMatch(.*)*', name: 'NotFound', component: () => import('../views/NotFoundView.vue') },
+
   ]
 })
 

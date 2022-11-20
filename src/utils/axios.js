@@ -4,7 +4,8 @@ const axiosInstance = axios.create({
     baseURL: import.meta.env.VITE_BASE_API_URL,
     timeout: 30000,
     headers: {
-        'Content-type': 'application/json',
+        'Content-Type': 'application/json', //require
+        'Accept': 'application/json', //require
     }
 });
 
@@ -24,11 +25,13 @@ axiosInstance.interceptors.response.use(
     },
     function (error) {
         //handle chung cho tất cả các lỗi từ api trả về để tạo alert cho người dùng
-        const alert = useAlertStore()
-        if(error?.response?.data?.message) {
-            alert.handleAlert({ isOpen: true, message: error?.response?.data?.message })
-            console.log(alert.message)
-        }
+        // if(error?.response?.status === 401){
+            const alert = useAlertStore()
+            if(error?.response?.data?.message) {
+                alert.handleAlert({ isOpen: true, message: error?.response?.data?.message })
+                console.log(alert.message)
+            }
+        // }
         console.log(error)
         // return Promise.reject(error)
     }
