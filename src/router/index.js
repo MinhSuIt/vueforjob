@@ -59,6 +59,12 @@ const router = createRouter({
       name: 'create-with-upload-form-data',
       component: () => import('../views/CreateWithUploadView.vue'),
     },
+    {
+      path: '/profile',
+      name: 'profile',
+      component: () => import('../views/ProfileView.vue'),
+      meta: { requireAuth: true },
+    },
     { path: '/:pathMatch(.*)*', name: 'NotFound', component: () => import('../views/NotFoundView.vue') },
 
   ]

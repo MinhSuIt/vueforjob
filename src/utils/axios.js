@@ -67,7 +67,9 @@ axiosInstance.interceptors.response.use(
                     },
                 });
             }
-
+        }
+        if (error?.response?.status === 400) {
+            //
         }
         console.log(error)
         // return Promise.reject(error)

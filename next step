@@ -1,0 +1,3 @@
+sau khi đăng nhập thì vào đc trang profile
+trang login cần sửa loading và notification
+sửa trag login lại, nếu thành công thì notification thành công và cho vào trang muốn vào(ví dụ muốn vào trang profile nhưng trang này bắt login thì khi vào profile phải redirect về login sau khi login thành công thì push về trang ban đầu muốn vào là profile)
