@@ -1,6 +1,6 @@
 <template>
   <div class="loading" v-if="isLoading.isLoading">
-    Loading with message: {{isLoading.message}}
+    <div class="loading-content">Loading with message: {{ isLoading.message }}</div>
   </div>
 </template>
 
@@ -18,12 +18,14 @@ export default {
 .loading {
   width: 100vw;
   height: 100vh;
-  text-align: center;
   background: #000;
-  position:fixed;
+  position: fixed;
   top: 0;
   left: 0;
-  color:white;
+  color: white;
   z-index: 99999;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 </style>
