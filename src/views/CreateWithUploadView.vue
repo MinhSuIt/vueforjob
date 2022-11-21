@@ -25,7 +25,8 @@ import { each, random } from "lodash";
 import axios from "./../utils/axios";
 import { useAlertStore, defaultAlertState } from "./../stores/alert";
 import { useLoadingStore, defaultLoadingState } from "./../stores/loading";
-import { mapActions } from "pinia";
+import { mapActions, mapState } from "pinia";
+import { notification } from "ant-design-vue";
 
 export default {
   data() {
@@ -48,8 +49,12 @@ export default {
       },
     };
   },
+  computed:{
+    ...mapState(useAlertStore, ["isOpen", "message"]),
+  },
   methods: {
     ...mapActions(useLoadingStore, ["handleLoading"]),
+    ...mapActions(useAlertStore, ["handleAlert"]),
     async createWithUpload() {
       this.handleLoading({
         ...defaultLoadingState,
@@ -58,7 +63,6 @@ export default {
       this.errors = null;
 
       let formData = new FormData();
-      //   formData.append("avatar", this.formData.avatar);
 
       each(this.formData, (value, key) => {
         formData.append(key, value);
@@ -67,14 +71,30 @@ export default {
       console.log(this.formData);
       console.log(formData);
       const res = await axios.post("auth/register", formData, {
-        // .post("auth/register", this.formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
       });
-      this.formData = {
-        ...this.defaultFormData,
-      };
+      if (res.id) {
+        //base logic cho cả vue và react nên đoạn this.handleAlert không hề dư
+        this.handleAlert({
+          ...defaultAlertState,
+          isOpen: true,
+          message: "success",
+        });
+        if(this.isOpen){
+          notification.open({
+            message: "Create thành công",
+            description: this.message,
+            onClick: () => {
+              console.log("Notification Clicked!");
+            },
+          });
+        }
+        this.formData = {
+          ...this.defaultFormData,
+        };
+      }
 
       this.handleLoading({
         ...defaultLoadingState,
@@ -85,10 +105,6 @@ export default {
       this.formData.avatar = e.target.files[0];
       this.formData.avatarName = this.formData.avatar.name;
     },
-  },
-  unmounted() {
-    // const alert = useAlertStore();
-    // alert.handleAlert(defaultState);
   },
 };
 </script>
