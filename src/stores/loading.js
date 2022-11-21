@@ -1,8 +1,12 @@
 import { defineStore } from 'pinia'
+export const defaultLoadingState = {
+    isLoading: false,
+    message: '',
+}
 export const useLoadingStore = defineStore('loading', {
     state: () => {
         return {
-            isLoading: false,
+            ...defaultLoadingState
         }
     },
     getters: {

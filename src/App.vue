@@ -1,9 +1,12 @@
 <script setup>
+import LoadingComponent from './components/LoadingComponent.vue'
 import LayoutView from "./views/LayoutView.vue";
+import 'ant-design-vue/dist/antd.css'; 
 </script>
 
 <template>
   <layout-view />
+  <loading-component></loading-component>
 </template>
 
 <style scoped>

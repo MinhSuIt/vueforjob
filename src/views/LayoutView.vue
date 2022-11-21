@@ -1,7 +1,9 @@
 <template>
   <Header />
   <Nav></Nav>
+  <alert-component />
   <RouterView />
+  
 </template>
 
 <script>

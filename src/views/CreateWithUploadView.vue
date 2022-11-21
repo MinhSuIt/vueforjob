@@ -23,61 +23,72 @@
 <script>
 import { each, random } from "lodash";
 import axios from "./../utils/axios";
+import { useAlertStore, defaultAlertState } from "./../stores/alert";
+import { useLoadingStore, defaultLoadingState } from "./../stores/loading";
+import { mapActions } from "pinia";
+
 export default {
   data() {
     const tmp = random(1, 888888888888) + "asdkjbsakdbsabkjd";
     const rand = random(1, 888888888888);
     return {
       formData: {
-        name: tmp,
+        // name: tmp,
         email: `${rand}${tmp}${rand}@gmail.com`,
         password: tmp,
+        avatar: null,
+        avatarName: "",
+      },
+      defaultFormData: {
+        name: "",
+        email: "",
+        password: "",
         avatar: null,
         avatarName: "",
       },
     };
   },
   methods: {
-    createWithUpload() {
+    ...mapActions(useLoadingStore, ["handleLoading"]),
+    async createWithUpload() {
+      this.handleLoading({
+        ...defaultLoadingState,
+        isLoading: true,
+      });
       this.errors = null;
 
       let formData = new FormData();
-    //   formData.append("avatar", this.formData.avatar);
+      //   formData.append("avatar", this.formData.avatar);
 
       each(this.formData, (value, key) => {
         formData.append(key, value);
       });
-      formData.append('key', 123);
+      formData.append("key", 123);
       console.log(this.formData);
       console.log(formData);
-      axios
-        .post("auth/register", formData, {
+      const res = await axios.post("auth/register", formData, {
         // .post("auth/register", this.formData, {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        })
-        .then((response) => {
-          console.log(response);
-          //   this.showForm = false
-          //   this.user = response.data.data
-        })
-        .catch((err) => {
-          //   if (err.response.status === 422) {
-          //     this.errors = []
-          //     .each(err.response.data.errors, error => {
-          //       .each(error, e => {
-          //         this.errors.push(e)
-          //       })
-          //     })
-          //   }
-          console.log(err);
-        });
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+      this.formData = {
+        ...this.defaultFormData,
+      };
+
+      this.handleLoading({
+        ...defaultLoadingState,
+        isLoading: false,
+      });
     },
     handleFileChange(e) {
       this.formData.avatar = e.target.files[0];
       this.formData.avatarName = this.formData.avatar.name;
     },
+  },
+  unmounted() {
+    // const alert = useAlertStore();
+    // alert.handleAlert(defaultState);
   },
 };
 </script>

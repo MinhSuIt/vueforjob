@@ -2,6 +2,8 @@ import { createRouter, createWebHistory } from 'vue-router'
 import { useAuthStore } from '../stores/auth'
 
 import { isEmpty } from 'lodash'
+import { useAlertStore, defaultAlertState } from '../stores/alert'
+import { useLoadingStore, defaultLoadingState } from '../stores/loading'
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -61,7 +63,7 @@ const router = createRouter({
 
   ]
 })
-
+// before mount
 router.beforeEach((to) => {
   // phải login mới vào đc những trang require login
   const auth = useAuthStore()
@@ -72,8 +74,22 @@ router.beforeEach((to) => {
   if (to.meta && to.meta.requireAuth === false && !isEmpty(auth?.user)) {
     router.back()
   }
+  //remove alert when change route
+  const alert = useAlertStore();
+  alert.handleAlert(defaultAlertState);
+
+  //display loading when change route
+  const loading = useLoadingStore();
+  loading.handleLoading({
+    ...defaultLoadingState,
+    isLoading: true,
+  });
 })
-
-
+// mounted
+router.afterEach((to) => {
+  //sau khi trag đc load xong thì tắt loading
+  const loading = useLoadingStore();
+  loading.handleLoading(defaultLoadingState);
+});
 
 export default router
