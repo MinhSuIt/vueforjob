@@ -75,7 +75,8 @@ export default {
           "Content-Type": "multipart/form-data",
         },
       });
-      if (res.id) {
+      console.log(res)
+      if (res?.id) {
         //base logic cho cả vue và react nên đoạn this.handleAlert không hề dư
         this.handleAlert({
           ...defaultAlertState,
